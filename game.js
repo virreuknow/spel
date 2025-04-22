@@ -1,3 +1,4 @@
+let safeRoad = [14895, 3317]
 let car, cam = { x: 0, y: 0, width: 1520, height: 675 }, keys = [];
 let mapW = 16000, mapH = 8000;
 let spc = null, boost = null;
@@ -67,6 +68,8 @@ function comp(w, h, c, x, y) {
         let ny = this.y - this.speed * Math.cos(this.vel);
 
         if (canDrive(nx, ny)) {
+            safeRoad[0] = this.x
+            safeRoad[1] = this.y
             this.x = Math.max(0, Math.min(nx, mapW));
             this.y = Math.max(0, Math.min(ny, mapH));
         } else {
@@ -77,12 +80,13 @@ function comp(w, h, c, x, y) {
     }
 
     this.updateSpeed = function () {
-        let acc = boost ? 0.06 : 0.01;
-        let max = boost ? 1.0 : 0.5;
+        let acc = boost ? 0.06 : 0.01
+        let max = boost ? 1.3 : 0.7
         let dec = 0.005;
 
         if (keys[38]) {
             this.speed += acc;
+            console.log(this.speed)
             if (this.speed > max) this.speed = max;
         } else if (keys[40]) {
             this.speed -= acc;
@@ -106,9 +110,9 @@ function canDrive(x, y) {
 }
 
 function camUpdate() {
-    if (car.x - cam.x < 300) cam.x = car.x - 300;
+    if (car.x - cam.x < 300) cam.x = car.x - 300
     if ((cam.x + cam.width) - car.x < 300) cam.x = car.x - cam.width + 300;
-    if (car.y - cam.y < 200) cam.y = car.y - 200;
+    if (car.y - cam.y < 200) cam.y = car.y - 200
     if ((cam.y + cam.height) - car.y < 200) cam.y = car.y - cam.height + 200;
 
     if (cam.x < 0) cam.x = 0;
@@ -138,6 +142,7 @@ function turnVal() {
 document.addEventListener("keydown", e => {
     if (e.code === "Space") spc = true;
     if (e.code === "ShiftLeft") boost = true;
+    if (e.code === "KeyC") car.x = safeRoad[0], car.y = safeRoad[1]
 });
 document.addEventListener("keyup", e => {
     if (e.code === "Space") spc = false;
