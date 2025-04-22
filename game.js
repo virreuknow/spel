@@ -1,6 +1,6 @@
 let safeRoad = [14895, 3317]
 let car = { x: 0, y: 0, width: 1520, height: 675 }, keys = [];
-let cam = { x: 0, y: 0, width: 1520, height: 675 }
+let cam = car
 let mapW = 16000, mapH = 8000;
 let spc = null, boost = null;
 
