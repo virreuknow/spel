@@ -1,5 +1,6 @@
 let safeRoad = [14895, 3317]
-let car, cam = { x: 0, y: 0, width: 1520, height: 675 }, keys = [];
+let car = { x: 0, y: 0, width: 1520, height: 675 }, keys = [];
+let cam = { x: 0, y: 0, width: 1520, height: 675 }
 let mapW = 16000, mapH = 8000;
 let spc = null, boost = null;
 
@@ -46,7 +47,7 @@ function comp(w, h, c, x, y) {
     this.y = y;
     this.speed = 0;
     this.move = 0;
-    this.ang = -0.8;
+    this.ang = -2.8;
     this.vel = 0;
 
     this.update = function () {
@@ -106,7 +107,7 @@ function comp(w, h, c, x, y) {
 function canDrive(x, y) {
     let px = hitctx.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
     let l = 0.299 * px[0] + 0.587 * px[1] + 0.114 * px[2];
-    return l > 200 || (px[0] > 180 && px[1] > 180 && px[2] < 120);
+    return l > 190 || (px[0] > 180 && px[1] > 180 && px[2] < 120);
 }
 
 function camUpdate() {
