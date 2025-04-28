@@ -1,4 +1,4 @@
-let safeRoad = [14895, 3317]
+let safeRoad = [14895, 3317, -2.8]
 let car = { x: 0, y: 0, width: 1520, height: 675 }, keys = [];
 let cam = car
 let mapW = 16000, mapH = 8000;
@@ -69,8 +69,11 @@ function comp(w, h, c, x, y) {
         let ny = this.y - this.speed * Math.cos(this.vel);
 
         if (canDrive(nx, ny)) {
+            if(car.speed >= 1) {
             safeRoad[0] = this.x
             safeRoad[1] = this.y
+            safeRoad[2] = this.ang
+            }
             this.x = Math.max(0, Math.min(nx, mapW));
             this.y = Math.max(0, Math.min(ny, mapH));
         } else {
@@ -87,7 +90,7 @@ function comp(w, h, c, x, y) {
 
         if (keys[38]) {
             this.speed += acc;
-            console.log(this.speed)
+            //console.log(this.speed)
             if (this.speed > max) this.speed = max;
         } else if (keys[40]) {
             this.speed -= acc;
@@ -140,10 +143,15 @@ function turnVal() {
     return spc ? 4 : 2;
 }
 
+function Menu() {
+    car.speed = 0
+}
+
 document.addEventListener("keydown", e => {
     if (e.code === "Space") spc = true;
     if (e.code === "ShiftLeft") boost = true;
-    if (e.code === "KeyC") car.x = safeRoad[0], car.y = safeRoad[1]
+    if (e.code === "KeyR") car.x = safeRoad[0], car.y = safeRoad[1], car.ang = safeRoad[2];
+    if (e.code == "Escape") Menu()
 });
 document.addEventListener("keyup", e => {
     if (e.code === "Space") spc = false;
