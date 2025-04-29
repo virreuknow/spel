@@ -3,6 +3,7 @@ let car = { x: 0, y: 0, width: 1520, height: 675 }, keys = [];
 let cam = car
 let mapW = 16000, mapH = 8000;
 let spc = null, boost = null;
+let Pause = false
 
 let bg = new Image();
 let carPic = new Image();
@@ -79,7 +80,7 @@ function comp(w, h, c, x, y) {
         } else {
             this.speed *= -0.2;
             this.x += -this.speed * Math.sin(this.vel);
-            this.y += this.speed * Math.cos(this.vel);
+            this.y += this.speed * Math.cos(this.vel); 
         }
     }
 
@@ -114,6 +115,7 @@ function canDrive(x, y) {
 }
 
 function camUpdate() {
+    if(Pause == false) {
     if (car.x - cam.x < 300) cam.x = car.x - 300
     if ((cam.x + cam.width) - car.x < 300) cam.x = car.x - cam.width + 300;
     if (car.y - cam.y < 200) cam.y = car.y - 200
@@ -123,9 +125,11 @@ function camUpdate() {
     if (cam.y < 0) cam.y = 0;
     if (cam.x > mapW - cam.width) cam.x = mapW - cam.width;
     if (cam.y > mapH - cam.height) cam.y = mapH - cam.height;
+    }
 }
 
 function update() {
+    if(Pause == false) {
     area.clear();
     area.context.drawImage(bg, -cam.x, -cam.y, mapW, mapH);
 
@@ -137,23 +141,27 @@ function update() {
     car.moveIt();
     camUpdate();
     car.update();
+    }
 }
 
 function turnVal() {
     return spc ? 4 : 2;
 }
 
-function Menu() {
-    car.speed = 0
+function togPause() {
+    Pause = !Pause;
 }
 
 document.addEventListener("keydown", e => {
     if (e.code === "Space") spc = true;
     if (e.code === "ShiftLeft") boost = true;
     if (e.code === "KeyR") car.x = safeRoad[0], car.y = safeRoad[1], car.ang = safeRoad[2];
-    if (e.code == "Escape") Menu()
 });
 document.addEventListener("keyup", e => {
     if (e.code === "Space") spc = false;
     if (e.code === "ShiftLeft") boost = false;
 });
+document-addEventListener("keypress", (e) => {
+    if (e.code == "KeyP") togPause()
+    console.log(Pause)
+})
